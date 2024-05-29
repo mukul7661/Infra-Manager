@@ -1,5 +1,6 @@
 const { helmInstall } = require("./utils/helmClient");
 const { createNamespace } = require("./utils/k8sService");
+require("dotenv").config();
 
 const startProcess = async () => {
   console.log("Starting process...");
@@ -13,13 +14,13 @@ const startProcess = async () => {
     await helmInstall(appName, namespace, chart);
   } catch (error) {
     console.log("Deployment error:", error);
-    // await fetch("http://localhost:5000/deploy/error", {
-    //   method: "POST",
+    await fetch("http://localhost:5000/deploy/error", {
+      method: "POST",
 
-    //   body: JSON.stringify({
-    //     deploymentId,
-    //   }),
-    // });
+      body: JSON.stringify({
+        deploymentId,
+      }),
+    });
   }
 
   process.exit(0);

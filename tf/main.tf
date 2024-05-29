@@ -23,13 +23,13 @@ module "eks" {
     }
   }
 
-  vpc_id                   = "vpc-0d73f41772718da44"
-  subnet_ids               = ["subnet-065296230b247da61", "subnet-068d986eedc997165", "subnet-09d1842c99e2adb86"]
+  vpc_id                   = "vpc-0a7f872fb582457eb"
+  subnet_ids               = ["subnet-0bc6af112d003e2aa", "subnet-02b6195c72bf57433", "subnet-04991e4800e080fb0"]
   # control_plane_subnet_ids = ["subnet-xyzde987", "subnet-slkjf456", "subnet-qeiru789"]
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
-    instance_types = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+    instance_types = ["t2.micro"]
   }
 
   eks_managed_node_groups = {
@@ -38,7 +38,7 @@ module "eks" {
       max_size     = 10
       desired_size = 1
 
-      instance_types = ["t3.large"]
+      instance_types = ["t2.micro"]
       capacity_type  = "SPOT"
     }
   }
