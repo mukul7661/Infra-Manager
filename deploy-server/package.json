@@ -1,0 +1,17 @@
+{
+  "name": "deploy-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "deployProcessor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-ecs": "^3.583.0",
+    "@kubernetes/client-node": "^0.21.0",
+    "aws-sdk": "^2.1629.0"
+  }
+}
