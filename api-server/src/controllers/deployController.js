@@ -1,9 +1,21 @@
 const Deployment = require("../models/Deployment");
+const { ecsClient, config } = require("../utils/ECSClient");
+const { RunTaskCommand } = require("@aws-sdk/client-ecs");
 
-async function sendECSCommand() {
+async function sendECSCommand(appName, namespace, repo, chart, deploymentId) {
+  console.log(
+    "Sending ECS command...",
+    appName,
+    namespace,
+    repo,
+    chart,
+    deploymentId,
+    config
+  );
+
   const command = new RunTaskCommand({
-    cluster: this.config.CLUSTER,
-    taskDefinition: this.config.TASK,
+    cluster: config.CLUSTER,
+    taskDefinition: config.TASK,
     launchType: "FARGATE",
     count: 1,
     networkConfiguration: {
@@ -20,12 +32,13 @@ async function sendECSCommand() {
     overrides: {
       containerOverrides: [
         {
-          name: "scoutflo-deploy-image",
+          name: "deploy-image",
           environment: [
-            { name: "NAMESPACE", value: modifiedUrl },
-            { name: "APP_NAME", value: project?.subDomain },
-            { name: "CHART", value: deployment.id },
-            { name: "DEPLOYMENT_ID", value: process.env.KAFKA_ENABLED },
+            { name: "APP_NAME", value: appName },
+            { name: "NAMESPACE", value: namespace },
+            { name: "HELM_REPO", value: repo },
+            { name: "CHART", value: chart },
+            { name: "DEPLOYMENT_ID", value: deploymentId },
           ],
         },
       ],
@@ -36,7 +49,7 @@ async function sendECSCommand() {
 }
 
 exports.deployApp = async (req, res) => {
-  const { namespace, appName, chart } = req.body;
+  const { namespace, appName, chart, repo } = req.body;
   const userId = req.user?.id;
   try {
     const deployment = await Deployment.findOne({ appName, namespace });
@@ -54,10 +67,11 @@ exports.deployApp = async (req, res) => {
 
     console.log("Deployment created:", newDeployment, chart);
 
-    // await sendECSCommand();
+    await sendECSCommand(appName, namespace, repo, chart, newDeployment?.id);
 
     res.status(201).json(newDeployment);
   } catch (error) {
+    console.error(error);
     res.status(400).json({ error: error.message });
   }
 };

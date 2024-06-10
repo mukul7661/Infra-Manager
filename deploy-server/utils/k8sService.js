@@ -1,6 +1,8 @@
 const { k8sApi } = require("./k8sClient");
 
 const createNamespace = async (namespace) => {
+  console.log(`Creating namespace ${namespace}`);
+
   try {
     await k8sApi.createNamespace({
       metadata: { name: namespace },
@@ -13,6 +15,7 @@ const createNamespace = async (namespace) => {
     ) {
       console.log(`Namespace ${namespace} already exists`);
     } else {
+      console.log(error);
       throw new Error(`Namespace creation error: ${error.message}`);
     }
   }

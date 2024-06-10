@@ -46,7 +46,7 @@ RUN aws configure set aws_access_key_id $AWS_KEY \
 
 RUN aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
-RUN chmod 600 ~/.kube/config
+# RUN chmod 600 ~/.kube/config
 
 WORKDIR /home/app
 

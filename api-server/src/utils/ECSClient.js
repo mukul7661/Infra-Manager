@@ -1,4 +1,5 @@
-import { ECSClient, CreateClusterCommand } from "@aws-sdk/client-ecs";
+const { ECSClient } = require("@aws-sdk/client-ecs");
+require("dotenv").config();
 
 const ecsClient = new ECSClient({
   region: process.env.AWS_REGION,
@@ -10,14 +11,7 @@ const ecsClient = new ECSClient({
 
 const config = {
   CLUSTER: "scoutflo-deploy-cluster",
-  TASK: "scoutflo-deploy-task",
+  TASK: "deploy-task-ec2",
 };
 
-async function createCluster() {
-  const command = new CreateClusterCommand({
-    clusterName: this.config.CLUSTER,
-  });
-  await this.ecsClient.send(command);
-}
-
-modile.exports = { ecsClient, config, createCluster };
+module.exports = { ecsClient, config };

@@ -6,7 +6,6 @@ const helmInstall = (helmRepo, releaseName, namespace, chart) => {
       `helm repo add ${releaseName} ${helmRepo} && helm install ${releaseName} ${releaseName}/${chart} --namespace ${namespace}`
     );
     exec(
-      // "kubectl get namespace",
       `helm repo add ${releaseName} ${helmRepo} && helm install ${releaseName} ${releaseName}/${chart} --namespace ${namespace}`,
       (error, stdout, stderr) => {
         if (error) {
